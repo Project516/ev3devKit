@@ -136,7 +136,7 @@ include (ValaVersion)
 ensure_vala_version ("0.24" MINIMUM)
 include (ValaPrecompile)
 
-find_package(GirCompiler REQUIRED)
+# find_package(GirCompiler REQUIRED)
 
 vala_precompile (LIBRARY_VALA_C ${LIBRARY_NAME}
 LIBRARY
@@ -144,7 +144,7 @@ LIBRARY
 PACKAGES
     ${COMMON_PACKAGES}
 CUSTOM_VAPIS
-    bindings/*.vapi
+    bindings/glib-extra.vapi
 OPTIONS
     --target-glib=${TARGET_GLIB}
     ${GRX3_VAPIDIR_OPTION}
@@ -153,13 +153,15 @@ GENERATE_VAPI
     ${EV3DEVKIT_PACKAGE}
 GENERATE_HEADER
     ${EV3DEVKIT_PACKAGE}
-GENERATE_GIR
-    ${GIR_NAME}-buggy-${GIR_VERSION}
+# GENERATE_GIR
+#    ${GIR_NAME}-buggy-${GIR_VERSION}
 )
 
 # Work around bug in valac where .gir is missing the "shared-library" attribute
 # in the namespace node. This is needed by dh_girepository to generate the
 # {shlibs:Depends} variable.
+
+if (FALSE)
 
 add_custom_command (
     OUTPUT
@@ -201,6 +203,8 @@ add_custom_target ("${LIBRARY_NAME}-typelib"
         "${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GIR_VERSION}.typelib"
 )
 
+endif()
+
 # end of workaround
 
 add_library(${LIBRARY_NAME} OBJECT ${LIBRARY_VALA_C})
@@ -223,8 +227,8 @@ install (TARGETS ${LIBRARY_NAME}-static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBD
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${EV3DEVKIT_PACKAGE}.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-${GIR_VERSION}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${EV3DEVKIT_PACKAGE}.vapi DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/vala/vapi/)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GIR_VERSION}.gir DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GIR_VERSION}.typelib DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GIR_VERSION}.gir DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GIR_VERSION}.typelib DESTINATION ${CMAKE_INSTALL_LIBDIR}/girepository-1.0/)
 
 if (EV3DEVKIT_BUILD_DEMO)
     set (EXEC_PACKAGES ${COMMON_PACKAGES} ${EV3DEVKIT_PACKAGE})
@@ -237,7 +241,7 @@ if (EV3DEVKIT_BUILD_DEMO)
     PACKAGES
         ${EXEC_PACKAGES}
     CUSTOM_VAPIS
-        bindings/*.vapi
+        bindings/glib-extra.vapi
     OPTIONS
         --target-glib=${TARGET_GLIB}
         --vapidir=${CMAKE_CURRENT_BINARY_DIR}
@@ -271,7 +275,7 @@ if (EV3DEVKIT_BUILD_DEMO)
     PACKAGES
         ${EXEC_PACKAGES}
     CUSTOM_VAPIS
-        bindings/*.vapi
+        bindings/glib-extra.vapi
     OPTIONS
         --target-glib=${TARGET_GLIB}
         --vapidir=${CMAKE_CURRENT_BINARY_DIR}
@@ -306,7 +310,7 @@ if (VALADOC_FOUND)
     include (ValadocGenerate)
     generate_valadoc (
         ${LIBRARY_SOURCE_FILES}
-        bindings/*.vapi
+        bindings/glib-extra.vapi
     PACKAGE_NAME
         ${PROJECT_NAME}
     PACKAGE_VERSION

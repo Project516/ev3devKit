@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+export DEB_CFLAGS_MAINT_APPEND = -Wno-error=implicit-function-declaration -Wno-error=int-conversion -Wno-error=incompatible-pointer-types
 # -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
@@ -7,10 +8,13 @@ export DH_VERBOSE=1
 GRX_SO_VERSION = $(shell dpkg -s libgrx-3.0-dev  | grep -o -P 'libgrx-3.0-\d+\s' | cut -d "-" -f 3)
 
 %:
-	dh $@ --with gir
+	dh $@
 
 override_dh_missing:
 	dh_missing --fail-missing
 
 override_dh_gencontrol:
 	dh_gencontrol -- -Vgrx-so-version=$(GRX_SO_VERSION)
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DENABLE_INTROSPECTION=OFF -DEV3DEVKIT_BUILD_DEMO=OFF

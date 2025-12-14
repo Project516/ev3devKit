@@ -20,7 +20,7 @@ This is currently in the development stages and is unstable.
 
 This project uses git and git submodules.
 
-    git clone --recursive git://github.com/ev3dev/ev3devKit
+    git clone --recursive https://github.com/ev3dev/ev3devKit
 
 
 ## Cross-compiling for the EV3

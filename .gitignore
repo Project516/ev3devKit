@@ -2,3 +2,6 @@ build*/
 *.o
 *~
 *.sublime-workspace
+
+#
+obj-arm-linux-*/*
